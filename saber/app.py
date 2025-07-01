@@ -1,13 +1,17 @@
 import asyncio
 import logging
+import os
 
 from fastapi import FastAPI
 from fastapi import WebSocket
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.websockets import WebSocketDisconnect
 
+from .intents.files_store import refresh_files_store
 from .queue_store import queue_pop
 from .queue_store import queue_put
+
+INTENTS_REFRESH_SECONDS = int(os.environ.get("INTENTS_REFRESH_SECONDS", "180"))
 
 app = FastAPI()
 logging.basicConfig(
@@ -78,9 +82,20 @@ async def queue_worker():
         await process_item(item)
         await asyncio.sleep(0)  # prevent blocking
 
+async def refresh_intents_periodically():
+    # tbh this isnt *that* heavy of a function but its best to do it periodically anyways
+    # why? ask jesus idk
+    while True:
+        try:
+            await refresh_files_store()
+            logger.info("Files store refreshed successfully.")
+        except Exception:
+            logger.exception("Error refreshing files store: %s")
+        await asyncio.sleep(INTENTS_REFRESH_SECONDS)  # default every 3m
 
 @app.on_event("startup")
 async def start_queue_worker():
-    task = asyncio.create_task(queue_worker())
-    background_tasks.add(task)
-    task.add_done_callback(background_tasks.discard)
+    for coroutine in [queue_worker(), refresh_intents_periodically()]:
+        task = asyncio.create_task(coroutine)
+        background_tasks.add(task)
+        task.add_done_callback(background_tasks.discard)

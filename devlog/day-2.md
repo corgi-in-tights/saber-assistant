@@ -43,3 +43,5 @@ TODO:
 - Shorten descriptions or make a quick descriptions variable
 
 Not me spending like 30 minutes being stupid at algorithms and somehow not getting a simple globbing thing to work (tree category intents and flat intents in saber/intents/files_store.py). I wanted to do both in one algo but clearly my brain is not developed enough for that, just splitting into two calls now.
+
+3:21AM: Got intent globbing working as intended, now just to setup prompting.
