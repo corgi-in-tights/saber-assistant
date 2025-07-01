@@ -34,6 +34,12 @@ The device layer is kind of something I need to setup a local Home Assistant con
 
 Intent classification is definitely very interesting, my cop-out here is that I'm using a prompted LLM but I would love to come back to making a good rule-based ML algo for this. Or a hybrid to optimize on basic stuff (turn the lights on) versus ambigious statements.
 
-Making a bunch of intents in config/intents/ and writing their slots, this is gonna take a bit. Not too many, just about 15 for now. By making very clear categories and subcategories it should be possible to scale up to crazy amounts (1000+ intents) without ever exceeding the standard token prompt limits -- and I'm sure models will get better if this gets popular enough for that.
+Making a bunch of intents in config/intents/ and writing their slots, this is gonna take a bit. Not too many, just about 15 for now. By making very clear categories and subcategories it should be possible to scale up to crazy amounts (1000+ intents) without ever exceeding the standard token prompt limits -- and I'm sure models/my solution will get better if this gets popular enough for that.
 
 Used ChatGPT to generate configs/intent/command/device/set.json and assistant/repeat.json. Gonna have to type the rest by hand. Why? Because I'm a squallid human being and the free gpt is mid.
+
+TODO:
+- Still need to do the questions/* intents but no need for now, this is enough for testing.
+- Shorten descriptions or make a quick descriptions variable
+
+Not me spending like 30 minutes being stupid at algorithms and somehow not getting a simple globbing thing to work (tree category intents and flat intents in saber/intents/files_store.py). I wanted to do both in one algo but clearly my brain is not developed enough for that, just splitting into two calls now.

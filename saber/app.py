@@ -57,12 +57,19 @@ async def process_item(item):
         return
 
     sentence = item["sentence"]
-    logger.debug("Processing item: %s", sentence)
+    logger.info("Processing sentence: %s", sentence)
 
-    # get intents
-    intents = []
+    # classify intents
+    classified_declaratives = []
 
-    
+    # pass to logic layer
+    for declarative in classified_declaratives:
+        logger.debug("Classified declarative: %s", declarative)
+        # logic stuff idk
+        # create response (beep or text response right now?)
+
+        # send response to configured WS server
+
 
 
 async def queue_worker():
