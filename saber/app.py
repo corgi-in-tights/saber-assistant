@@ -8,6 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.websockets import WebSocketDisconnect
 
 from .intents.files_store import refresh_files_store
+from .intents.llm import classify_intents
 from .queue_store import queue_pop
 from .queue_store import queue_put
 
@@ -55,6 +56,13 @@ async def websocket_endpoint(websocket: WebSocket):
         clients.remove(websocket)
 
 
+async def forward_confirmation(websocket: WebSocket, message: str):
+    try:
+        await websocket.send_text(message)
+    except Exception as e:
+        logger.exception("Error sending confirmation: %s", e)
+
+
 async def process_item(item):
     if "sentence" not in item:
         logger.error("Item missing 'sentence' key: %r", item)
@@ -64,16 +72,11 @@ async def process_item(item):
     logger.info("Processing sentence: %s", sentence)
 
     # classify intents
-    classified_declaratives = []
+    classifications = classify_intents(sentence)
+    for c in classifications:
+        logger.debug("Intent Classification: %s", c)
 
-    # pass to logic layer
-    for declarative in classified_declaratives:
-        logger.debug("Classified declarative: %s", declarative)
-        # logic stuff idk
-        # create response (beep or text response right now?)
-
-        # send response to configured WS server
-
+    # no logic processing for now, just classifications
 
 
 async def queue_worker():
