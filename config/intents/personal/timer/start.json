@@ -1,0 +1,14 @@
+{
+    "intent": "timer.start",
+    "description": "Start or create a timer for a specified duration.",
+    "slots": {
+        "name": "The optional name or purpose of the timer (e.g., 'cooking', 'laundry').",
+        "duration": "The duration for the timer, specified in seconds, minutes, or hours (e.g., '10 minutes', '1 hour', '30 seconds').",
+        "remind": "An optional reminder time before the timer ends, specified in seconds, minutes, or hours (e.g., '5 minutes')."
+    },
+    "examples": [
+        "Start a timer for 10 minutes and remind me in 5 minutes.",
+        "My clothes finish in 5 minutes.",
+        "Cooking timer for 60 seconds."
+    ]
+}

@@ -1,0 +1,13 @@
+{
+    "intent": "timer.cancel",
+    "description": "Cancel an active timer or stop a specific timer by name.",
+    "slots": {
+        "name": "An optional name or purpose of the timer (e.g., 'cooking', 'laundry').",
+        "duration": "An optional duration for the timer, specified in seconds, minutes, or hours (e.g., '10 minutes', '1 hour', '30 seconds')."
+    },
+    "examples": [
+        "Cancel my 20 minute timer.",
+        "I'm awake, stop the nap timer.",
+        "End timer."
+    ]
+}

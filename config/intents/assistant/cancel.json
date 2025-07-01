@@ -1,0 +1,10 @@
+{
+    "intent": "assistant.cancel",
+    "description": "Cancel any ongoing activities.",
+    "slots": {},
+    "examples": [
+        "Stop.",
+        "Shut up.",
+        "Cancel"
+    ]
+}

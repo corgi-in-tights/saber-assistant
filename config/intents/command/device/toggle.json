@@ -1,0 +1,13 @@
+{
+    "intent": "command.device.toggle",
+    "description": "Turns a device on or off, or toggles its state (e.g., lights, appliances).",
+    "slots": {
+        "device": "The name of the target device (e.g., kitchen lights, thermostat).",
+        "state": "The desired state to set the device to (e.g., 'on', 'off', 'toggle')."
+    },
+    "examples": [
+        "Set the thermostat to 22 degrees.",
+        "Volume 50%",
+        "Set kitchen lights brightness to 80%."
+    ]
+}

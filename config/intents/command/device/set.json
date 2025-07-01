@@ -1,0 +1,13 @@
+{
+    "intent": "command.device.set",
+    "description": "Sets a specific attribute for a device (e.g., color, brightness, volume).",
+    "slots": {
+        "device": "The name of the target device (e.g., kitchen lights, thermostat).",
+        "value": "The target value to set (e.g., 22, 70%, lower, increase)"
+    },
+    "examples": [
+        "Set the thermostat to 22 degrees.",
+        "Volume 50%",
+        "Set kitchen lights brightness to 80%."
+    ]
+}

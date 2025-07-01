@@ -1,0 +1,13 @@
+{
+    "intent": "command.device.current_status",
+    "description": "Gets the state of a specific attribute of a device.",
+    "slots": {
+        "device": "The name of the target device (e.g., kitchen lights, thermostat).",
+        "attribute": "A specific attribute (e.g., power, current temperature, brightness level)."
+    },
+    "examples": [
+        "What are the lights in the kitchen set to?",
+        "Current volume?",
+        "What's the temperature on the thermostat right now?"
+    ]
+}

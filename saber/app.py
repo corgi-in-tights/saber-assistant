@@ -59,6 +59,10 @@ async def process_item(item):
     sentence = item["sentence"]
     logger.debug("Processing item: %s", sentence)
 
+    # get intents
+    intents = []
+
+    
 
 
 async def queue_worker():

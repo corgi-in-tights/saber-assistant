@@ -1,5 +1,5 @@
 Tuesday, June 31, 2025
-(its close enough im just making a new devlog)
+(its close enough like 10pm im just making a new devlog)
 
 SCRAP EVERYTHING
 
@@ -29,3 +29,11 @@ Logic layer: Use the device layer and intent classification layer to communicate
 11:54PM (still june 30th technically): For now it wont do streaming, something to the consider in the future. Just HTTP FastAPI for now.
 
 1:26AM: Setup the FastAPI websocket (yeah we're using websockets now).
+
+The device layer is kind of something I need to setup a local Home Assistant container or the likes for. My Zigbee hub isn't arriving till a while (I will not bend to the dark side of Wi-Fi smart home devices) so I'm gonna get started on intent classification. I think it's just cooler if I do it myself so... Here we go.
+
+Intent classification is definitely very interesting, my cop-out here is that I'm using a prompted LLM but I would love to come back to making a good rule-based ML algo for this. Or a hybrid to optimize on basic stuff (turn the lights on) versus ambigious statements.
+
+Making a bunch of intents in config/intents/ and writing their slots, this is gonna take a bit. Not too many, just about 15 for now. By making very clear categories and subcategories it should be possible to scale up to crazy amounts (1000+ intents) without ever exceeding the standard token prompt limits -- and I'm sure models will get better if this gets popular enough for that.
+
+Used ChatGPT to generate configs/intent/command/device/set.json and assistant/repeat.json. Gonna have to type the rest by hand. Why? Because I'm a squallid human being and the free gpt is mid.

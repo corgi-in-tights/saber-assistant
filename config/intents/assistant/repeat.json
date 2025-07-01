@@ -1,0 +1,10 @@
+{
+    "intent": "assistant.repeat",
+    "description": "Asks the assistant to repeat the last thing it said.",
+    "slots": {},
+    "examples": [
+        "Can you repeat that?",
+        "Say that again.",
+        "What did you just say?"
+    ]
+}
