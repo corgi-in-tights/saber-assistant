@@ -1,17 +1,23 @@
-[project]
-name = "smart-home-declaratives"
+[tool.poetry]
+name = "saber"
 version = "0.1.0"
-description = "Placeholder description"
+description = ""
 authors = [
-  { name="Reyaan", email="hiscorginess@gmail.com" }
+    "corgi-in-tights <59304120+corgi-in-tights@users.noreply.github.com>",
 ]
-license = "GPL v3"
 readme = "README.md"
-dependencies = []
+
+[tool.poetry.dependencies]
+python = "^3.12"
+fastapi = {extras = ["standard"], version = "^0.115.14"}
+
+[tool.poetry.group.dev.dependencies]
+rust-just = "^1.39.0"
 
 [build-system]
-requires = ["setuptools>=61.0"]
-build-backend = "setuptools.build_meta"
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
 
 [tool.ruff]
 line-length = 119
@@ -93,3 +99,6 @@ ignore = [
 extend-unsafe-fixes = [
   "UP038",
 ]
+
+[tool.ruff.lint.isort]
+force-single-line = true

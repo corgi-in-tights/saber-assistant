@@ -1,6 +1,6 @@
 Monday, June 30, 2025.
 
-Started a small devlog to help keep track of my thoughts (among other things), this project is a lot more.. thinking than coding. Physical notebook ran out of space. Lol.
+This project is a lot more.. thinking than coding. Physical notebook ran out of space. Lol.
 
 I've been trying to build my own Alexa-esque assistant pretty much, this project is something I was gonna get around to anyways, decided to make a public library out of it. Essentially:
 
@@ -8,6 +8,8 @@ I've been trying to build my own Alexa-esque assistant pretty much, this project
 - Accept contextual data
 - Return a list of human-readable and machine-parseable 'declarations' ("turn \[device\] off")
 - Throw some HA-intergration in there
+
+For obvious reasons, I have to state that this will get nowhere close to the insanity of Alexa/Google Hub. The streaming and real-time processing tech they have is a *bit* above me. Pretty sure it does NLU processing on partial transcripts half-way through your sentence. WTF.
 
 
 The main issues here are customizability and LLM limits.
@@ -52,3 +54,8 @@ For the MVP thinking of making a basic spotlight-like app. Press CMD+B, opens a 
 
 why have i decided to torture myself with work, oh why.
 
+10:24PM: Been trying to come up with a general name since the scope is getting larger, not getting anywhere. 
+
+Was thinking something nerdy, like a reference to Dune mentats (but from thufir import get_declaratives is just weird). Something starting with J would also be nice (honorary jarvis reference). This isn't really too relevant thought taking a quick 10 or so minutes out to get a decent name would be useful in the long run.
+
+Decided on Saber. Why? It sounds cool and I like sabre more than epée. Also, American spelling, why not?
