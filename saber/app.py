@@ -7,8 +7,8 @@ from fastapi import WebSocket
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.websockets import WebSocketDisconnect
 
-from .intents.files_store import refresh_files_store
-from .intents.llm import classify_intents
+from .intents import classify_intents
+from .intents import refresh_files_store
 from .queue_store import queue_pop
 from .queue_store import queue_put
 
@@ -57,10 +57,7 @@ async def websocket_endpoint(websocket: WebSocket):
 
 
 async def forward_confirmation(websocket: WebSocket, message: str):
-    try:
-        await websocket.send_text(message)
-    except Exception as e:
-        logger.exception("Error sending confirmation: %s", e)
+    pass
 
 
 async def process_item(item):

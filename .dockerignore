@@ -1,0 +1,9 @@
+devlogs/
+__pycache__/
+.DS_Store
+*.pyc
+*.pyo
+*.pyd
+*.db
+*.sqlite3
+*.log

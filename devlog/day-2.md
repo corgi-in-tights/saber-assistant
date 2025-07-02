@@ -1,4 +1,4 @@
-Tuesday, June 31, 2025
+Tuesday, July 1, 2025
 (its close enough like 10pm im just making a new devlog)
 
 SCRAP EVERYTHING
@@ -38,10 +38,19 @@ Making a bunch of intents in config/intents/ and writing their slots, this is go
 
 Used ChatGPT to generate configs/intent/command/device/set.json and assistant/repeat.json. Gonna have to type the rest by hand. Why? Because I'm a squallid human being and the free gpt is mid.
 
-TODO:
-- Still need to do the questions/* intents but no need for now, this is enough for testing.
-- Shorten descriptions or make a quick descriptions variable
 
 Not me spending like 30 minutes being stupid at algorithms and somehow not getting a simple globbing thing to work (tree category intents and flat intents in saber/intents/files_store.py). I wanted to do both in one algo but clearly my brain is not developed enough for that, just splitting into two calls now.
 
 3:21AM: Got intent globbing working as intended, now just to setup prompting.
+
+3:51AM: some minor tweaks here and there, wrist hurts so im retiring for the night
+
+TODO:
+- Still need to do the questions/* intents but no need for now, this is enough for testing.
+- Shorten descriptions or make a quick descriptions variable
+- Active responses via websocket ("Sure! Let me search the internet for you... Here's what I found:") and LLM(? feels unnecessary)
+
+
+9:01PM: Added skills and context providers, these can be attached to intents via the config files. Context providers provide.. context, given the initial data, intent template and any data they can fetch via saber or themselves. So like, the list of devices, or something. This is important because if any slot is unfilled or invalid the intent fails.
+
+Skills are what actually execute, so the `question.internet` would by default use the `config/skills/search_internet.py` skill which.. searches the internet, somehow.

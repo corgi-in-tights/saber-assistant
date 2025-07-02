@@ -2,7 +2,7 @@
 LLM_API_TOKEN = "dog"  # noqa: S105
 
 
-# use /config when possible
+# use /config/prompts when possible
 
 # general LLM query function
 
