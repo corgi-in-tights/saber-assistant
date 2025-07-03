@@ -1,0 +1,9 @@
+{
+    "classifiers": [
+        "saber.classifiers.common_regex.RegexClassifier",
+        {
+            "name": "saber.classifiers.external_classifier.ExternalClassifier",
+            "url": "http://localhost:5091/classify"
+        }
+    ]
+}

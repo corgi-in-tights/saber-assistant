@@ -1,4 +1,4 @@
-Monday, June 30, 2025.
+Monday, June 30, 2025
 
 This project is a lot more.. thinking than coding. Physical notebook ran out of space. Lol.
 

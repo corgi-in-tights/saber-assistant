@@ -1,4 +1,4 @@
-from saber import SaberSkill
+from .base import SaberSkill
 
 
 class SearchInternetSkill(SaberSkill):

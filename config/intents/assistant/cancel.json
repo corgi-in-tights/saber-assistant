@@ -6,5 +6,10 @@
         "Stop.",
         "Shut up.",
         "Cancel"
+    ],
+    "patterns": [
+        "stop",
+        "cancel",
+        "shut up"
     ]
 }
