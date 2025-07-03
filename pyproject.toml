@@ -10,9 +10,9 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.12"
 fastapi = {extras = ["standard"], version = "^0.115.14"}
+watchfiles = "^1.1.0"
 
 [tool.poetry.group.dev.dependencies]
-rust-just = "^1.39.0"
 
 [build-system]
 requires = ["poetry-core"]

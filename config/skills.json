@@ -1,0 +1,10 @@
+{
+    "saber:search_internet": {
+        "path": "saber.skills.search_internet.SearchInternetSkill",
+        "kwargs": {
+            "search_engine": "google",
+            "search_engine_api_key": "",
+            "search_engine_cx": ""
+        }
+    }
+}

@@ -1,0 +1,17 @@
+{
+    "assistant": {
+        "description": "assistant stuff and commands idk man",
+        "context_providers": [],
+        "children": {}
+    },
+    "command": {
+        "description": "lorem ipsum",
+        "children": {
+            "device": {
+                "context_providers": [
+                    "saber:device_list"
+                ]
+            }
+        }
+    }
+}

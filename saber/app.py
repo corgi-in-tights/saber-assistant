@@ -7,7 +7,6 @@ from fastapi import WebSocket
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.websockets import WebSocketDisconnect
 
-from .intents import classify_intents
 from .intents import refresh_files_store
 from .queue_store import queue_pop
 from .queue_store import queue_put

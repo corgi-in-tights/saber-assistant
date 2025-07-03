@@ -663,30 +663,6 @@ rich = ">=13.7.1"
 typing-extensions = ">=4.12.2"
 
 [[package]]
-name = "rust-just"
-version = "1.40.0"
-description = "🤖 Just a command runner"
-optional = false
-python-versions = ">=3.7"
-files = [
-    {file = "rust_just-1.40.0-py3-none-macosx_10_12_x86_64.whl", hash = "sha256:a408f2c02883440451cc7eac6c656babc20f2f3270b1abfe841dd7909061d53c"},
-    {file = "rust_just-1.40.0-py3-none-macosx_11_0_arm64.whl", hash = "sha256:7ec70d2dd94f430603abe50e0c487750a376b4d2f02f7dd6743f46cfd11fb40d"},
-    {file = "rust_just-1.40.0-py3-none-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:fcc1b2c8549b24bc93d8d86dd9895ef7aa9a04a7bcdd116b486a27b877fc2b46"},
-    {file = "rust_just-1.40.0-py3-none-manylinux_2_17_armv7l.manylinux2014_armv7l.whl", hash = "sha256:61cdf860692c9784d9e8b52cc44c497dd9b8a9426331fc3f759ec211902c5372"},
-    {file = "rust_just-1.40.0-py3-none-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:f3fc6ebdbdefcac055bea66e2767da0b027e785e4ae5f37503749d6e3ea30fc6"},
-    {file = "rust_just-1.40.0-py3-none-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:57db67f88bf46e0f886d0b5db26438062dd683229ef0fe4263f703416c5bd858"},
-    {file = "rust_just-1.40.0-py3-none-manylinux_2_17_s390x.manylinux2014_s390x.whl", hash = "sha256:c6e356eb1131109754eb3ccd768f8f2d67f68d83feda81df803575302b4514d0"},
-    {file = "rust_just-1.40.0-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:c3bc5ae7b77d582d231f81004228ce079b329e06563cf764025d2dea4f8484c9"},
-    {file = "rust_just-1.40.0-py3-none-musllinux_1_2_aarch64.whl", hash = "sha256:77026036ba07cee6645459c7d763d7e1d9a612f0d1ac6f96c7f977b15e9634e8"},
-    {file = "rust_just-1.40.0-py3-none-musllinux_1_2_armv7l.whl", hash = "sha256:afb3c9c78fd174b159f4e74751bbb9e8b63f2dddbb40802469093522b30270ad"},
-    {file = "rust_just-1.40.0-py3-none-musllinux_1_2_i686.whl", hash = "sha256:81089ef2dd51e313fc1fe77ef3a39649768815daecc4e9e4531e76d50d5a3f2d"},
-    {file = "rust_just-1.40.0-py3-none-musllinux_1_2_x86_64.whl", hash = "sha256:5576231fbef3553afdd552c8906f4866b8c335ff3f7d7479e2a91c632b50a724"},
-    {file = "rust_just-1.40.0-py3-none-win32.whl", hash = "sha256:c4d0faeb12139b84fc67ab8f20ef557bfd6aa031d2baea20b6d8c3195e364c5e"},
-    {file = "rust_just-1.40.0-py3-none-win_amd64.whl", hash = "sha256:e3c0204b37404f68ff63390c07acfb02dcd77d7025ae4d0e8579570bfbfbd6bc"},
-    {file = "rust_just-1.40.0.tar.gz", hash = "sha256:1d45313111b955e474d6844320098da3715bad6d1153727d4af12c7252d3acd0"},
-]
-
-[[package]]
 name = "shellingham"
 version = "1.5.4"
 description = "Tool to Detect Surrounding Shell"
@@ -1042,4 +1018,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "fe9b39fb0d3944d1be77859118ff72e0dcded80c9a8a5875a55f69f40d183b8a"
+content-hash = "64097a3838f5c3dd3ff2193fa69c3f6ba664655f1c3e98d1ce047f17ee5a96d2"
