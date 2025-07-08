@@ -4,10 +4,7 @@ class SaberContextProvider:
     This class is responsible for providing context to the Saber logic layer.
     """
 
-    def __init__(self, provider_id: str):
-        self.provider_id = provider_id
-
-    async def get_context(self, input_data: dict, intent_template: dict):
+    async def get_context(self, contexts: dict, input_data: dict, intent_template: dict):
         """
         Get the context for the Saber logic layer.
         This method should be overridden by subclasses to provide specific context.

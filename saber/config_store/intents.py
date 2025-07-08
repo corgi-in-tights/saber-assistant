@@ -6,7 +6,6 @@ from typing import Any
 
 import anyio
 
-INTENTS_DIR = os.environ.get("INTENTS_DIR", "config/intents")
 logger = logging.getLogger("saber")
 
 
@@ -73,25 +72,8 @@ async def build_category_tree(base_dir: str) -> dict:
 
     return await recurse(base_dir)
 
-class FilesStore:
-    flattened_intents = None
-    category_tree = None
-
-async def refresh_files_store():
-    """Refresh the files store with the latest intents and categories."""
-    logger.debug("Refreshing files store...")
-    FilesStore.flattened_intents = await fetch_flattened_intents(INTENTS_DIR)
-    FilesStore.category_tree = await build_category_tree(INTENTS_DIR)
-    logger.debug("Files store refreshed successfully.")
-
-async def get_flattened_intents() -> dict:
-    """Get the flattened intents."""
-    if not FilesStore.flattened_intents:
-        await refresh_files_store()
-    return FilesStore.flattened_intents
-
-async def get_category_tree() -> dict:
-    """Get the category tree."""
-    if not FilesStore.category_tree:
-        await refresh_files_store()
-    return FilesStore.category_tree
+async def load_intents(filepath: str) -> dict:
+    return {
+        "category_tree": await build_category_tree(filepath),
+        "flattened_intents": await fetch_flattened_intents(filepath),
+    }

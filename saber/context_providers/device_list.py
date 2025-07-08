@@ -1,5 +1,6 @@
-from saber import SaberContextProvider
 from saber.devices import get_device_manager
+
+from .base import SaberContextProvider
 
 
 class DeviceListContextProvider(SaberContextProvider):
@@ -7,9 +8,6 @@ class DeviceListContextProvider(SaberContextProvider):
     Context provider for device list management.
     This class is responsible for providing context related to device lists in the Saber logic layer.
     """
-
-    def __init__(self):
-        super().__init__("device_list")
 
     async def get_context(self, input_data: dict, intent_template: dict):
         """

@@ -1,5 +1,6 @@
-{
-    "saber:intent_group": {
-        "path": "saber.context_providers.intent_group.IntentGroupContextProvider"
+[
+    {
+        "name": "saber:intent_groups",
+        "path": "saber.context_providers.IntentGroupContextProvider"
     }
-}
+]

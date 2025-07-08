@@ -96,3 +96,5 @@ So now, literally every scope has context providers:
 This system I like a lot more because it is far more flexible. `ExternalClassifier` has a buddy `CategoryFilteredExternalClassifier` which just only sends intents that fit the categories given by the `IntentGroupContextProvider`.
 
 Oh yeah and because they get referred to a lot, made some namespaced shortcuts in `context_providers.json` and `skills.json`. One bad part about this system is that pretty much every single intent is probably going to need a skill, the good part is very similar intents can re-use the same skill using override kwargs, but still a lot of typing to do to implement all these.
+
+Override kwargs none for now I think? Can do a bit of a parent thing, but that's for later. Instead, just redefine new ones or use one from the list. The name is important now, its used for accessing it in the context handler and classifier (since the contexts obj is just a big dict) and duplication-prevention.

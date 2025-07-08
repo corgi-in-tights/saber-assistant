@@ -1,0 +1,22 @@
+[
+    {
+        "name": "saber:common_classifier",
+        "path": "saber.classifiers.MostCommonClassifier",
+        "kwargs": {
+            "common_sentences_paths": [
+                "configs/common_sentences.json"
+            ],
+            "reformat_sentences": true
+        }
+    },
+    {
+        "name": "saber:filtered_external_classifier",
+        "path": "saber.classifiers.CategoryFilteredExternalClassifier",
+        "context_providers": [
+            "saber:intent_groups"
+        ],
+        "kwargs": {
+            "url": "http://localhost:XXXX/classify"
+        }
+    }
+]

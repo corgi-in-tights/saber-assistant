@@ -7,7 +7,8 @@ from fastapi import WebSocket
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.websockets import WebSocketDisconnect
 
-from .intents import refresh_files_store
+from .config_store import config
+from .config_store import initialize_configs
 from .queue_store import queue_pop
 from .queue_store import queue_put
 
@@ -57,6 +58,8 @@ async def websocket_endpoint(websocket: WebSocket):
 
 
 async def process_item(item):
+    if not item:
+        return
     if "sentence" not in item:
         logger.error("Item missing 'sentence' key: %r", item)
         return
@@ -64,34 +67,7 @@ async def process_item(item):
     sentence = item["sentence"]
     logger.info("Processing sentence: %s", sentence)
 
-    # fetch all pre-category context providers by config_store.py
-    # run them all to get a dict of pre-contexts (pass sentence)
-
-    # fetch all category classifiers by config_store.py
-    # pass sentence + dict of pre-contexts to each classifier
-    # get list of intents with each having a confidence score of 0.8 or higher
-
-    # fetch all post-category context providers by config_store.py
-    # run them all to get a dict of post-contexts (pass sentence)
-
-    # fetch all intent classifiers by config_store.py
-    # pass sentence + dict of pre-contexts + dict of post-contexts to each classifier
-    # run them all until one returns a list of intents with each having a confidence score of 0.8 or higher
-
-    # fetch the skills attached to each intent, run in order of confidence score
-    # allow skills to directly send responses to attached clients via the send method
-    # response format is:
-    """
-    {
-        "response_type": "deferral" | "message" | "nonverbal",
-        "value": "string" | {"key": "value"},
-        "additional_data": {"key": "value"}  # optional, for any extra data
-        "sentence": ""
-        "intent": "intent_name",  # the intent that triggered this response
-        "confidence": 0.8,  # the confidence score of the intent
-        "slots": {"slot_name": "value"}  # optional, for any slots extracted from the sentence
-    }
-    """
+    logger.debug("Using classifiers: %r", config.intent_classifiers)
 
 
 async def queue_worker():
@@ -100,20 +76,12 @@ async def queue_worker():
         await process_item(item)
         await asyncio.sleep(0)  # prevent blocking
 
-# sample config refresh thing
-# need to add dir watch to configs/ and reload configs on change
-async def refresh_intents_periodically():
-    while True:
-        try:
-            await refresh_files_store()
-            logger.info("Files store refreshed successfully.")
-        except Exception:
-            logger.exception("Error refreshing files store: %s")
-        await asyncio.sleep(INTENTS_REFRESH_SECONDS)  # default every 3m
 
 @app.on_event("startup")
-async def start_queue_worker():
-    for coroutine in [queue_worker(), refresh_intents_periodically()]:
-        task = asyncio.create_task(coroutine)
-        background_tasks.add(task)
-        task.add_done_callback(background_tasks.discard)
+async def startup_sequence():
+    await initialize_configs()
+
+    logger.info("Starting queue worker background task.")
+    task = asyncio.create_task(queue_worker())
+    background_tasks.add(task)
+    task.add_done_callback(background_tasks.discard)
