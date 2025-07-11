@@ -1,9 +1,9 @@
 [
     {
-        "name": "saber:common_classifier",
-        "path": "saber.classifiers.MostCommonClassifier",
+        "name": "saber:regex_classifier",
+        "path": "saber.classifiers.RegexClassifier",
         "kwargs": {
-            "common_sentences_paths": [
+            "filepaths": [
                 "configs/common_sentences.json"
             ],
             "reformat_sentences": true

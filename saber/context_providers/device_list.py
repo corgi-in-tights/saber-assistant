@@ -14,20 +14,18 @@ class DeviceListContextProvider(SaberContextProvider):
         Get the context for device list management.
         This method should be overridden by subclasses to provide specific context.
         """
-        devices = await get_device_manager().get_devices()
-        device_list = [
-            {
-                "id": device["id"],
-                "name": device["name"],
-                "model": device.get("model", "Unknown"),
-                "manufacturer": device.get("manufacturer", "Unknown"),
-                "entities": await get_device_manager().get_device_entities(device["id"]),
-            }
-            for device in devices
-        ]
+        # devices = await get_device_manager().get_devices()
+        # device_list = [
+        #     {
+        #         "id": device["id"],
+        #         "name": device["name"],
+        #         "model": device.get("model", "Unknown"),
+        #         "manufacturer": device.get("manufacturer", "Unknown"),
+        #         "entities": await get_device_manager().get_device_entities(device["id"]),
+        #     }
+        #     for device in devices
+        # ]
         return {
-            "device_list": device_list,
+            "device_list": [],
         }
 
-    async def get_prompt(self, context: dict):
-        return f"Here is the list of devices available in your system. {context['device_list']}"

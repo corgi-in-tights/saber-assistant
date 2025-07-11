@@ -7,7 +7,7 @@ class RegexClassifier(SaberClassifier):
     This is a simple classifier that can be used for basic intent recognition.
     """
 
-    def classify(self, sentence: str, contexts: dict) -> list[dict]:
+    async def classify(self, sentence: str, contexts: dict) -> list[dict]:
         """
         Classify the given sentence using regex patterns.
         Returns a list of matched intents with confidence scores.

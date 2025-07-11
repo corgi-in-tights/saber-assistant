@@ -12,6 +12,11 @@ class IntentGroupContextProvider(SaberContextProvider):
         Get the context for device list management.
         This method should be overridden by subclasses to provide specific context.
         """
+        return {
+            "groups": [
+                {"extraction": "hi", "category": "test"},
+            ],
+        }
 
     async def get_prompt(self, context: dict):
         return f"Here is the list of devices available in your system. {context['device_list']}"
