@@ -1,0 +1,26 @@
+Classify the following sentence into a list of intents chosen from the list below:
+
+"I'm feeling a bit funny, check back in with me in about an hour please and let Linda know if I'm in trouble"
+
+Categories (and their sub-categories):
+general_assistant (General assistant stuff, like cancelling ongoing stuff)
+- cancel_current
+health_timer (Timer-related assistant check-ins for health or general purpose, contacts all or a specific emergency contact on end)
+- start
+- stop
+emergency_contact (Anything to do with emergency contacts who are people)
+- create
+- remove
+- notify
+question (Anything that is a question not related to one of the other categories)
+- local_device
+- dosage
+- internet
+medication_report (Starting or ending a current medication report or log)
+- start
+- finish
+
+Simply return any intents as "category.intent_name" such as "timer.start" and its relevant portion as a JSON object, in the format of:
+{
+  "timer.start": "Start timer for 1 hour"
+}

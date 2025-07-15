@@ -7,7 +7,7 @@ from fastapi import WebSocket
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.websockets import WebSocketDisconnect
 
-from .config_store import config
+from .classifiers import CategoryFilteredExternalClassifier
 from .config_store import initialize_configs
 from .queue_store import queue_pop
 from .queue_store import queue_put
@@ -55,49 +55,50 @@ async def websocket_endpoint(websocket: WebSocket):
     finally:
         clients.remove(websocket)
 
+intent_classifiers = [CategoryFilteredExternalClassifier()]
 
+CLASSIFIER_CONFIDENCE_THRESHOLD = float(os.environ.get("CLASSIFIER_CONFIDENCE_THRESHOLD", "0.8"))
 
 async def process_item(item):
     if not item:
-        return
+        return None
     if "sentence" not in item:
         logger.error("Item missing 'sentence' key: %r", item)
-        return
+        return None
 
     sentence = item["sentence"]
     logger.info("Processing sentence: %s", sentence)
 
-    logger.debug("Using classifiers: %r", config.intent_classifiers)
-    logger.debug("Using context providers: %r", config.context_providers)
+    most_confident_classifier = [0.0, None]
 
-    # process each classifier
-    # TODO: make this use interfaces? idk, currently just assumes each key exists
-    for classifier_data in config.intent_classifiers:
-        contexts = {}
-        if "context_providers" in classifier_data:
-            for context_provider_name in classifier_data["context_providers"]:
-                context_provider = config.context_providers[context_provider_name]["class"]()
-                data = await context_provider.get_context(item, {})
-                if not data:
-                    logger.warning("No context data returned from %s", context_provider_name)
-                    continue
+    # get the confidence score for each classifier
+    # and filter out those that are not a correct fit, tiebroken by order
+    for c in intent_classifiers:
+        confidence = await c.get_assumed_confidence(item)
+        if confidence > CLASSIFIER_CONFIDENCE_THRESHOLD and confidence > most_confident_classifier[0]:
+            logger.debug("Classifier %s confident with score: %f", c.__class__.__name__, confidence)
+            most_confident_classifier = [confidence, c]
 
-                logger.debug("Context from %s: %r", context_provider_name, data)
-                contexts[context_provider_name] = data
+    classifier = most_confident_classifier[1]
+    if classifier is None:
+        logger.warning("No classifier found with sufficient confidence.")
+        return False
 
-        classifier = classifier_data["class"]()
-        classified_data = await (classifier.classify(sentence, contexts))
+    # get all intents
+    category_contexts = {}
+    global_contexts = {}
 
-        logger.debug("Intents from %s: %r", classifier_data["name"], classified_data)
+    classifier_context = await classifier.assemble_context(item, category_contexts, global_contexts)
+    intents = await classifier.classify(item, classifier_context)
 
-        for intent in classified_data:
-            logger.debug("Processing intent: %r", intent)
+    for intent in intents:
+        try:
+            await intent.run_skill()
+        except Exception:
+            logger.exception("Skill execution failed for intent: %s", intent.name)
+            return False
 
-        # sentence is fully classified with a confidence score of 0.8+
-        # TODO: make this configurable & add confidence scores
-        unclassified_sentence = classified_data["sentence"]
-        if len(unclassified_sentence) < MINIMUM_UNCLASSIFIED_LENGTH:
-            break
+    return True
 
 
 async def queue_worker():

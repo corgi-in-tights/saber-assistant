@@ -1,0 +1,8 @@
+{
+    "cancel": {
+        "intent": "assistant.cancel"
+    },
+    "stop": {
+        "intent": "assistant.cancel"
+    }
+}

@@ -1,6 +1,0 @@
-[
-    {
-        "sentences": ["cancel", "stop"],
-        "intent": "assistant.cancel"
-    }
-]

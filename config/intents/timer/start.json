@@ -10,5 +10,6 @@
         "Start a timer for 10 minutes and remind me in 5 minutes.",
         "My clothes finish in 5 minutes.",
         "Cooking timer for 60 seconds."
-    ]
+    ],
+    "skill": "saber:start_timer"
 }

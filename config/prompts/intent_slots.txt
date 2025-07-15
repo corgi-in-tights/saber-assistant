@@ -1,0 +1,21 @@
+Given the following intents and their relevant sentences:
+
+{
+  "health_timer.start": "Check back in with me in about an hour, let Linda know if I'm in trouble"
+}
+
+These are the slots for each intent that need to be filled in:
+health_timer.start:
+- timer_name [if no name is given, default to Health Timer]
+- duration [in minutes, such as '240']
+- contact_names [a list of comma-seperated people to contact on timer end, can be blank]
+
+Return in the format of:
+[
+    {
+        "name": "intent_name",
+        "slots": {
+            "slot_name": "value"
+        }
+    }
+]

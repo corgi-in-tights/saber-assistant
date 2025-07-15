@@ -1,12 +1,12 @@
 [
     {
         "name": "saber:regex_classifier",
-        "path": "saber.classifiers.RegexClassifier",
+        "path": "saber.classifiers.DepthRegexClassifier",
         "kwargs": {
-            "filepaths": [
-                "configs/common_sentences.json"
-            ],
-            "reformat_sentences": true
+            "depth_provider": "classifiers/regex/depths.json",
+            "depths": [
+                ["classifiers/regex/depth_0.json"]
+            ]
         }
     },
     {

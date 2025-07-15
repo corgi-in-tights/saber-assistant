@@ -4,7 +4,7 @@ class SaberSkill:
     Skills should inherit from this class and implement the `execute` method.
     """
 
-    async def execute(self, *args, **kwargs):
+    async def execute(self, name, slots, **kwargs):
         """
         Execute the skill logic.
         This method should be overridden by subclasses.

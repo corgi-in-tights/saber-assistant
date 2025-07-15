@@ -1,6 +1,6 @@
 # Saber Assistant
 
-In this day and age, we all appreciate the idea of having our own virtual assistants. Saber is designed to be an async lightweight (and standalone) framework that handles the tedious portion of developing a system to process input and return output. Also comes with some services that may come of use (regex classification, a flexible Response system, Home Assistant intergration, etc.)
+In this day and age, we all appreciate the idea of having our own virtual assistants. Saber is designed to be an asynchronous lightweight (and standalone) framework that handles the tedious portion of developing a system to process input and return output. Also comes with some services that may come of use (regex classification, a flexible Response system, Home Assistant integration, etc.)
 
 An input of:
 ```json
