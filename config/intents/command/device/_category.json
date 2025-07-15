@@ -1,0 +1,6 @@
+{
+    "description": "This file contains the configuration for the device command category.",
+    "context_providers": [
+        "saber:intent_groups"
+    ]
+}

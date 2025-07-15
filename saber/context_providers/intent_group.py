@@ -1,4 +1,4 @@
-from .base import SaberContextProvider
+from saber import SaberContextProvider
 
 
 class IntentGroupContextProvider(SaberContextProvider):

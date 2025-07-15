@@ -1,5 +1,15 @@
 [
     {
+        "name": "saber:regex_classifier",
+        "path": "saber.classifiers.DepthRegexClassifier",
+        "kwargs": {
+            "depth_provider": "classifiers/regex/depths.json",
+            "depths": [
+                ["classifiers/regex/depth_0.json"]
+            ]
+        }
+    },
+    {
         "name": "saber:filtered_external_classifier",
         "path": "saber.classifiers.CategoryFilteredExternalClassifier",
         "context_providers": [

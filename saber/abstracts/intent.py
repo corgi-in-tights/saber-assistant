@@ -25,3 +25,20 @@ class SaberIntent:
             slots=self.slots,
             **kwargs,
         )
+
+class SaberIntentTemplate:
+    def __init__(self, name: str, slot_templates: dict, skill: SaberSkill = None):
+        self.name = name
+        self.slot_templates = slot_templates
+        self.skill = skill
+
+    def to_intent(self, confidence: float = 1.0) -> SaberIntent:
+        """
+        Convert this template into a SaberIntent with the given confidence.
+        """
+        return SaberIntent(
+            name=self.name,
+            confidence=confidence,
+            skill=self.skill,
+            slots=self.slot_templates,
+        )

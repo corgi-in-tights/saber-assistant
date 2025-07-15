@@ -2,7 +2,8 @@ import inspect
 import logging
 import os
 
-from .intents import load_intents
+from .intents import build_intents_tree
+from .intents import flatten_tree_into_templates
 from .lazy_list import load_lazy_list_into_dict
 from .lazy_list import load_lazy_list_into_list
 
@@ -61,25 +62,8 @@ class ConfigsStore:
 
 configs_store = ConfigsStore()
 
-class Config:
-    @property
-    def intent_classifiers(self):
-        return configs_store.get_data("intent_classifiers")
-
-    @property
-    def intents(self):
-        return configs_store.get_data("intents")
-
-    @property
-    def context_providers(self):
-        return configs_store.get_data("context_providers")
-
-    @property
-    def skills(self):
-        return configs_store.get_data("skills")
-
-
-config = Config()
+def get_config(x):
+    return configs_store.get_data(x)
 
 async def initialize_configs():
     """
@@ -90,12 +74,19 @@ async def initialize_configs():
 
     config_items = [
         ("intent_classifiers", load_lazy_list_into_list, CLASSIFIERS_PATH),
-        ("intents", load_intents, INTENTS_DIR),
         ("context_providers", load_lazy_list_into_dict, CONTEXT_PROVIDERS_PATH),
         ("skills", load_lazy_list_into_dict, SKILLS_PATH),
     ]
     for key, method, path in config_items:
         await configs_store.load_config(key, method, path)
+
+    intent_tree = await build_intents_tree(INTENTS_DIR)
+    logger.debug("Intent tree built: %r", intent_tree)
+    configs_store.set_data("intent_tree", intent_tree)
+
+    intent_templates = await flatten_tree_into_templates(intent_tree, INTENTS_DIR)
+    logger.debug("Intent templates generated: %r", intent_templates)
+    configs_store.set_data("intent_templates", intent_templates)
 
     logger.info("All configurations loaded successfully.")
 

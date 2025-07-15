@@ -1,3 +1,4 @@
+import asyncio
 import json
 import logging
 import os
@@ -6,10 +7,12 @@ from typing import Any
 
 import anyio
 
+from saber import SaberIntentTemplate
+
 logger = logging.getLogger("saber")
 
 
-async def load_json_file(filepath: str) -> dict[str, Any] | None:
+async def load_json_file_async(filepath: str) -> dict[str, Any] | None:
     try:
         async with await anyio.open_file(filepath, "r") as f:
             content = await f.read()
@@ -24,56 +27,116 @@ async def load_json_file(filepath: str) -> dict[str, Any] | None:
     return None
 
 
-async def fetch_flattened_intents(base_dir: str) -> dict:
+async def list_dir(path: str) -> list[str]:
+    return await asyncio.to_thread(os.listdir, path)
+
+
+async def walk_subdirectories(parent_path: str, process_fn):
     result = {}
-    base_dir = Path(base_dir).resolve()
-
-    for root, _, files in os.walk(base_dir):
-        for file in files:
-            if file.endswith("_desc.json"):
-                continue
-
-            if file.endswith(".json"):
-                abs_path = Path(root) / file
-                rel_path = os.path.relpath(abs_path, base_dir)
-                # Remove .json extensions yk
-                dotted_key = rel_path.replace(os.sep, ".")
-                if "." in dotted_key:
-                    dotted_key = ".".join(dotted_key.split(".")[:-1])
-                try:
-                    intent_data = await load_json_file(str(abs_path))
-                    if intent_data:
-                        result[dotted_key] = intent_data.get("description", "")
-                except (OSError, json.JSONDecodeError):
-                    logger.exception("Failed to load %s", abs_path)
+    for entry in await list_dir(parent_path):
+        entry_path = Path(parent_path) / entry
+        if entry_path.is_dir():
+            result[entry] = await process_fn(str(entry_path))
     return result
 
 
-async def build_category_tree(base_dir: str) -> dict:
-    base_dir = Path(base_dir).resolve()
+async def build_intents_tree(base_dir):
+    async def process_category(curr_path):
+        category = {
+            "description": "",
+            "intents": [],
+            "subcategories": {},
+            "context_providers": [],
+        }
 
-    async def recurse(current_path: str) -> dict:
-        tree = {}
-        try:
-            for entry in os.scandir(current_path):
-                if entry.is_dir():
-                    name = entry.name
-                    desc_file = Path(entry.path) / "_category.json"
-                    children = await recurse(entry.path)
-                    if desc_file.exists():
-                        desc_data = await load_json_file(desc_file)
-                        description = desc_data.get("description", "") if desc_data else ""
-                    else:
-                        description = ""
-                    tree[name] = {"description": description, "children": children}
-        except OSError:
-            logger.exception("Error reading directory %s", current_path)
-        return tree
+        # load _category.json if it exists
+        category_file = Path(curr_path) / "_category.json"
+        if category_file.is_file():
+            try:
+                data = await load_json_file_async(str(category_file))
+                category["description"] = data.get("description", "")
+                category["context_providers"] = data.get("context_providers", [])
+            except (OSError, json.JSONDecodeError):
+                logger.exception("Error loading category %s", curr_path)
 
-    return await recurse(base_dir)
+        # process intents and subcategories
+        for entry in await list_dir(curr_path):
+            entry_path = Path(curr_path) / entry
+            if entry_path.is_dir():
+                continue
 
-async def load_intents(filepath: str) -> dict:
-    return {
-        "category_tree": await build_category_tree(filepath),
-        "flattened_intents": await fetch_flattened_intents(filepath),
-    }
+            if entry.endswith(".json") and entry != "_category.json":
+                category["intents"].append(entry[:-5])
+
+        category["subcategories"] = await walk_subdirectories(curr_path, process_category)
+
+        return category
+
+    return await walk_subdirectories(base_dir, process_category)
+
+
+
+async def flatten_tree_into_templates(
+    intent_tree: dict,
+    base_dir: str,
+    prefix: str = "",
+    path_prefix: str = "",
+) -> dict:
+    result = {}
+
+    for category_name, data in intent_tree.items():
+        full_prefix = f"{prefix}.{category_name}" if prefix else category_name
+        category_path = f"{path_prefix}/{category_name}" if path_prefix else category_name
+
+
+        for intent in data.get("intents", []):
+            # load intent template
+            try:
+                intent_template_data = await load_json_file_async(f"{base_dir}/{category_path}/{intent}.json")
+            except (OSError, json.JSONDecodeError, FileNotFoundError):
+                logger.debug("Failed to load intent template for %s", intent)
+                continue
+
+            if not intent_template_data:
+                logger.debug("Intent template for %s is empty", intent)
+                continue
+
+            intent_name_full = f"{full_prefix}.{intent}"
+            template = SaberIntentTemplate(
+                intent_name_full,
+                intent_template_data.get("slots", {}),
+                intent_template_data.get("skill", None),
+            )
+
+            result[intent_name_full] = template
+
+        # recurse into subcategories
+        subcategories = data.get("subcategories", {})
+        if subcategories:
+            sub_result = await flatten_tree_into_templates(
+                subcategories,
+                base_dir,
+                full_prefix,
+                category_path,
+            )
+            result.update(sub_result)
+
+    return result
+
+# {
+#     "timer": {
+#         "description": "",
+#         "intents": {
+#             "start",
+#             "stop"
+#         },
+#         "subcategories": {
+            
+#         }
+#     }
+# }
+
+# {
+#     "command.device.set": IntentTemplate()
+# }
+

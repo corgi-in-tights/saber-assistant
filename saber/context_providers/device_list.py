@@ -1,6 +1,5 @@
+from saber import SaberContextProvider
 from saber.devices import get_device_manager
-
-from .base import SaberContextProvider
 
 
 class DeviceListContextProvider(SaberContextProvider):

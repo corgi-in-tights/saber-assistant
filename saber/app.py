@@ -8,6 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.websockets import WebSocketDisconnect
 
 from .classifiers import CategoryFilteredExternalClassifier
+from .config_store import get_config
 from .config_store import initialize_configs
 from .queue_store import queue_pop
 from .queue_store import queue_put
@@ -59,30 +60,40 @@ intent_classifiers = [CategoryFilteredExternalClassifier()]
 
 CLASSIFIER_CONFIDENCE_THRESHOLD = float(os.environ.get("CLASSIFIER_CONFIDENCE_THRESHOLD", "0.8"))
 
-async def process_item(item):
-    if not item:
-        return None
-    if "sentence" not in item:
-        logger.error("Item missing 'sentence' key: %r", item)
-        return None
 
-    sentence = item["sentence"]
-    logger.info("Processing sentence: %s", sentence)
-
+async def select_classifier(item: dict):
     most_confident_classifier = [0.0, None]
 
     # get the confidence score for each classifier
     # and filter out those that are not a correct fit, tiebroken by order
     for c in intent_classifiers:
         confidence = await c.get_assumed_confidence(item)
-        if confidence > CLASSIFIER_CONFIDENCE_THRESHOLD and confidence > most_confident_classifier[0]:
-            logger.debug("Classifier %s confident with score: %f", c.__class__.__name__, confidence)
+        logger.debug("Classifier %s confident with score: %f", c.__class__.__name__, confidence)
+        if confidence >= CLASSIFIER_CONFIDENCE_THRESHOLD and confidence > most_confident_classifier[0]:
             most_confident_classifier = [confidence, c]
 
-    classifier = most_confident_classifier[1]
+    return most_confident_classifier[1]
+
+
+async def process_item(item):
+    if item is None:
+        return False
+    if "sentence" not in item:
+        logger.error("Item missing 'sentence' key: %r", item)
+        return False
+
+    sentence = item["sentence"]
+    logger.info("Processing sentence: %s", sentence)
+
+    intents = get_config("intents")
+    logger.debug("Available intents: %r", intents)
+
+    classifier = await select_classifier(item)
     if classifier is None:
         logger.warning("No classifier found with sufficient confidence.")
         return False
+
+    logger.debug("Selected classifier: %s", classifier.__class__.__name__)
 
     # get all intents
     category_contexts = {}
@@ -101,11 +112,13 @@ async def process_item(item):
     return True
 
 
-async def queue_worker():
+async def queue_worker(process_task=process_item):
     while True:
         item = await queue_pop()
-        await process_item(item)
-        await asyncio.sleep(0)  # prevent blocking
+        if item is None:
+            await asyncio.sleep(0.1)
+            continue
+        await process_task(item)
 
 
 @app.on_event("startup")

@@ -14,7 +14,7 @@ class SaberClassifier:
         :param sentence: The input sentence to classify.
         :return: A confidence score between 0 and 1.
         """
-        return 0.8
+        return 0.0
 
     async def assemble_context(self, item: dict, category_contexts: dict, global_contexts: dict) -> float:
         return {**global_contexts, **category_contexts}

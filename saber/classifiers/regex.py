@@ -1,6 +1,5 @@
+from saber import SaberClassifier
 from saber.utils import load_json_file
-
-from .base import SaberClassifier
 
 
 class RegexClassifier(SaberClassifier):
